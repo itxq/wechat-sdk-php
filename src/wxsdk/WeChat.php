@@ -324,6 +324,22 @@ class WeChat
     }
     
     /**
+     * 获取请求页面URL
+     * @return string
+     */
+    protected function getUrl() {
+        $ssl = strip_tags($_SERVER['HTTPS']);
+        $server_name = strip_tags($_SERVER['SERVER_NAME']);
+        $request_url = strip_tags($_SERVER['REQUEST_URI']);
+        if (!$ssl || $ssl != 'on') {
+            $url = 'http://' . $server_name . $request_url;
+        } else {
+            $url = 'https://' . $server_name . $request_url;
+        }
+        return $url;
+    }
+    
+    /**
      * 获取数组元素
      * @param $key - 键
      * @param $array - 原始数组
