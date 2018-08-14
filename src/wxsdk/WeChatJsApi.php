@@ -80,6 +80,7 @@ class WeChatJsApi extends WeChat
         $result = Http::requestGet($url);
         /* 判断获取响应结果是否成功 */
         if (!$result) {
+            $this->message = 'JsApiTicket获取失败';
             /* 获取响应结果失败时返回 false */
             return false;
         }

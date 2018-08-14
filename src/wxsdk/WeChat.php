@@ -23,7 +23,6 @@ use itxq\wechat\lib\Http;
  */
 class WeChat
 {
-    
     /**
      * @var string - 微信公众号接口地址
      */
@@ -228,9 +227,14 @@ class WeChat
      */
     public function __construct($config = []) {
         $this->config = array_merge($this->config, $config);
-        self::$token = $this->getArrayData('token', $config, '');
-        self::$appId = $this->getArrayData('app_id', $config, '');
-        self::$appSecret = $this->getArrayData('app_secret', $config, '');
+        self::$token = $this->getSubValue('token', $config, '');
+        self::$appId = $this->getSubValue('app_id', $config, '');
+        self::$appSecret = $this->getSubValue('app_secret', $config, '');
+        $this->initialize($config);
+    }
+    
+    // 初始化
+    protected function initialize($config) {
     }
     
     /**
@@ -302,7 +306,7 @@ class WeChat
      * @return mixed|string
      */
     public function getMessage() {
-        if ($this->errCode != '0' && isset($this->messageCN[$this->errCode])) {
+        if (isset($this->messageCN[$this->errCode])) {
             return $this->messageCN[$this->errCode];
         }
         return $this->message;
@@ -340,14 +344,21 @@ class WeChat
     }
     
     /**
-     * 获取数组元素
-     * @param $key - 键
-     * @param $array - 原始数组
-     * @param bool $default - 不存在时返回的默认值
-     * @return mixed 存在返回数组元素，不存在返回默认值
+     * 获取数组、对象下标对应值，不存在时返回指定的默认值
+     * @param string|integer $name - 下标（键名）
+     * @param array|object $data - 原始数组/对象
+     * @param mixed $default - 指定默认值
+     * @return mixed
      */
-    protected function getArrayData($key, $array, $default = false) {
-        return isset($array[$key]) ? $array[$key] : $default;
+    protected function getSubValue($name, $data, $default = '') {
+        if (is_object($data)) {
+            $value = isset($data->$name) ? $data->$name : $default;
+        } else if (is_array($data)) {
+            $value = isset($data[$name]) ? $data[$name] : $default;
+        } else {
+            $value = $default;
+        }
+        return $value;
     }
     
     /**

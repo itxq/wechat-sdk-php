@@ -34,7 +34,7 @@ class WeChatLogin extends WeChat
         /* 获取请求时附带的参数 */
         $params = $_GET;
         /* 微信公众号登录所必要的code */
-        $code = strip_tags($this->getArrayData('code', $params, ''));
+        $code = strip_tags($this->getSubValue('code', $params, ''));
         if (!empty($code)) {
             return $this->getWeChatUserInfo($code, $lang);
         }
@@ -72,7 +72,7 @@ class WeChatLogin extends WeChat
      * @return bool|mixed
      * @throws \Exception
      */
-    private function getWeChatUserInfo($code, $lang = 'zh_CN') {
+    public function getWeChatUserInfo($code, $lang = 'zh_CN') {
         if (empty($code)) {
             throw new \Exception('参数错误：code不存在');
         }

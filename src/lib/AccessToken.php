@@ -50,7 +50,7 @@ class AccessToken
             return self::getAccessToken($appId, $appSecret, $apiUrl);
         }
         // 获取文件信息
-        $fileInfo = json_decode(file_get_contents(realpath($tokenFile)));
+        $fileInfo = json_decode(file_get_contents(realpath($tokenFile)), true);
         // 判断 AccessToken 是否过期
         if ((time() - filemtime($tokenFile)) > ($fileInfo['expires_in'] - 60)) {
             // AccessToken过期时通过接口获取
