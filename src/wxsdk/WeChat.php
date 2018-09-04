@@ -306,7 +306,7 @@ class WeChat
      * @return mixed|string
      */
     public function getMessage() {
-        if (isset($this->messageCN[$this->errCode])) {
+        if ($this->errCode != 0 && isset($this->messageCN[$this->errCode])) {
             return $this->messageCN[$this->errCode];
         }
         return $this->message;
