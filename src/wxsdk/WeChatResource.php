@@ -47,6 +47,7 @@ class WeChatResource extends WeChat
         $result = Http::requestGet($url);
         $result = json_decode($result, true);
         if (isset($result['errcode']) && $result['errcode'] != 0) {
+            $this->errCode = $result['errcode'];
             $this->message = $result['errmsg'];
             return false;
         }
@@ -82,6 +83,7 @@ class WeChatResource extends WeChat
         $result = Http::requestPost($url, $data);
         $result = json_decode($result, true);
         if (isset($result['errcode']) && $result['errcode'] != 0) {
+            $this->errCode = $result['errcode'];
             $this->message = $result['errmsg'];
             return false;
         }
@@ -105,6 +107,7 @@ class WeChatResource extends WeChat
         $result = Http::requestPost($url, $data);
         $result = json_decode($result, true);
         if (isset($result['errcode']) && $result['errcode'] != 0) {
+            $this->errCode = $result['errcode'];
             $this->message = $result['errmsg'];
             return false;
         }
@@ -138,6 +141,7 @@ class WeChatResource extends WeChat
         $result = Http::requestPost($url, $data);
         $result = json_decode($result, true);
         if (isset($result['errcode']) && $result['errcode'] != 0) {
+            $this->errCode = $result['errcode'];
             $this->message = $result['errmsg'];
             return false;
         }
@@ -154,6 +158,7 @@ class WeChatResource extends WeChat
         $result = Http::requestPost($url, json_encode(['media_id' => $mediaId]));
         $result = json_decode($result, true);
         if (isset($result['errcode']) && $result['errcode'] != 0) {
+            $this->errCode = $result['errcode'];
             $this->message = $result['errmsg'];
             return false;
         }
@@ -184,6 +189,7 @@ class WeChatResource extends WeChat
         if (isset($result['media_id'])) {
             return $result['media_id'];
         }
+        $this->errCode = $result['errcode'];
         $this->message = $result['errmsg'];
         return false;
     }
@@ -196,12 +202,13 @@ class WeChatResource extends WeChat
     public function mediaGet($mediaId) {
         $url = $this->apiUrl . 'cgi-bin/media/get?access_token=' . $this->_getAccessToken() . '&media_id=' . $mediaId;
         $result = Http::requestGet($url);
-        $arrayResult = json_decode($result, true);
-        if (isset($arrayResult['errcode'])) {
+        $result = json_decode($result, true);
+        if (isset($result['errcode'])) {
+            $this->errCode = $result['errcode'];
             $this->message = $result['errmsg'];
             return false;
-        } else if (isset($arrayResult['video_url'])) {
-            return $arrayResult['video_url'];
+        } else if (isset($result['video_url'])) {
+            return $result['video_url'];
         } else {
             return $result;
         }
