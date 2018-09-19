@@ -14,6 +14,7 @@ namespace itxq\wechat\wxsdk;
 
 use itxq\wechat\lib\AccessToken;
 use itxq\wechat\lib\Http;
+use itxq\wechat\lib\Tools;
 
 
 /**
@@ -332,15 +333,7 @@ class WeChat
      * @return string
      */
     protected function getUrl() {
-        $ssl = isset($_SERVER['HTTPS']) ? strip_tags($_SERVER['HTTPS']) : false;
-        $server_name = strip_tags($_SERVER['SERVER_NAME']);
-        $request_url = strip_tags($_SERVER['REQUEST_URI']);
-        if (!$ssl || $ssl != 'on') {
-            $url = 'http://' . $server_name . $request_url;
-        } else {
-            $url = 'https://' . $server_name . $request_url;
-        }
-        return $url;
+        return Tools::getUrl();
     }
     
     /**
