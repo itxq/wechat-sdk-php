@@ -37,3 +37,32 @@ $data = \itxq\wechat\wxsdk\WeChatLogin::ins($config)->login($callbackUrl);
 $data = @json_decode($data, true);
 var_dump($data);
 ```
+
+```
+// 微信支付使用
+require_once __DIR__ . '/../vendor/autoload.php';
+$config = [
+    'APPID'        => 'wx426b3015555a46be',
+    'MCHID'        => '1900009851',
+    'KEY'          => '8934e7d15453e97507ef794cf7b0519d',
+    'APPSECRET'    => '7813490da6f1265e4901ffb80afaa36f',
+    'SSLCERT_PATH' => '',
+    'SSLKEY_PATH'  => '',
+    'NOTIFY_URL'   => 'https://127.0.0.1/index.php',
+    'RETURN_URL'   => 'https://127.0.0.1/index.php',
+];
+$paySdk = new \itxq\wechat\pay\WeChatPay($config);
+$data = [
+    'id'           => '312312',
+    'out_trade_no' => '321312312312',
+    'body'         => '测试',
+    'fee'          => 1,
+    'attach'       => 'tets222',
+];
+$pay = $paySdk->pay($data);
+if ($pay['code'] == 1) {
+    echo $pay['msg'];
+} else {
+    exit($pay['msg']);
+}
+```
