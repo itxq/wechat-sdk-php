@@ -36,6 +36,7 @@ class WeChatPay
      * @throws \Exception
      */
     public function __construct($wxPayConfig) {
+        date_default_timezone_set('PRC');
         self::$wxPayConfig = new WxPayConfig($wxPayConfig);
     }
     
@@ -61,7 +62,7 @@ class WeChatPay
      * @return array['code'=>1,'msg'=>''] // code为2表示订单为已支付订单，无需重复下单，1表示生产支付页面成功，0表示失败
      * @throws \Exception
      */
-    public static function pay($params) {
+    public function pay($params) {
         $t = time();
         $tools = new JsApiPay(self::$wxPayConfig);
         $isMicroMessenger = Tools::isMicroMessenger();
@@ -140,7 +141,7 @@ class WeChatPay
                 break;
             default:
                 $template = 'native_pay_api';
-                $qrCode = urlencode(Tools::getSubValue('code_url', $order, ''));
+                $qrCode = Tools::getSubValue('code_url', $order, '');
                 if (empty($qrCode)) {
                     exit('支付二维码生成失败');
                 }
