@@ -32,17 +32,9 @@ class WeChatJsApi extends WeChat
      */
     public function getSignPackage() {
         $jsapiTicket = $this->_getJsApiTicket();
-        $ssl = strip_tags($_SERVER['HTTPS']);
-        $server_name = strip_tags($_SERVER['SERVER_NAME']);
-        $request_url = strip_tags($_SERVER['REQUEST_URI']);
-        if (!$ssl || $ssl != 'on') {
-            $url = 'http://' . $server_name . $request_url;
-        } else {
-            $url = 'https://' . $server_name . $request_url;
-        }
-        $yuming = str_replace($request_url, '', $url);
         $timestamp = time();
         $nonceStr = $this->cmRound(16, 'all');
+        $url = $this->getUrl();
         // 这里参数的顺序要按照 key 值 ASCII 码升序排序
         $tempArray = [
             'jsapi_ticket' => $jsapiTicket,
@@ -57,7 +49,6 @@ class WeChatJsApi extends WeChat
             'nonceStr'  => $nonceStr,
             'timestamp' => $timestamp,
             'url'       => $url,
-            'ym'        => $yuming,
             'signature' => $signature,
             'rawString' => $string
         ];
